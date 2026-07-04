@@ -1,0 +1,65 @@
+{
+	"fileVersion": 15,
+	"title": "MyProjectB",
+	"description": "",
+	"keyArt": "Resources/Icon128.png",
+	"docsUrl": "",
+	"apiAccess": "Private",
+	"bindings":
+	{
+		"projectId": "ca55df97-4af5-ccea-95fd-a7a8feeba7a2",
+		"modules":
+		{
+			"MyProjectB": "3628bbe2-4ef5-0c8a-b10a-b4b7c3d60b65"
+		},
+		"bSuppressAutomaticVersePathAssignment": false,
+		"projectVersePath": "/gradune@fortnite.com/MyProjectB"
+	},
+	"compatibilityVersion": "41.10",
+	"requiredRedirectorStartingVersion": "41.10.55335788",
+	"editorPermissions": [],
+	"epicApp": "",
+	"sortPriority": 0,
+	"featureSet": "",
+	"plugins": [
+		{
+			"name": "MyProjectB",
+			"bIsRoot": true,
+			"bIsPublic": false
+		}
+	],
+	"dataSets":
+	{
+		"matchmaking":
+		{
+			"maxPlayers": 16,
+			"maxTeamCount": 16,
+			"maxTeamSize": 16,
+			"maxSocialPartySize": 16,
+			"allowJoinInProgress": true,
+			"allowSquadFillOption": false,
+			"islandQueuePrivacy": "Public",
+			"minPlayers": 1,
+			"overtimePlayerTarget": 1,
+			"queueMainDuration": 5,
+			"queueOvertimeDuration": 5,
+			"useSkillBasedMatchmaking": false,
+			"ratingType": "",
+			"splitscreenDisabled": false,
+			"version": 1
+		},
+		"experimental":
+		{
+			"sceneGraph":
+			{
+				"bIsSceneGraphSystemAllowed": true,
+				"bEnableOneFilePerEntity": false
+			},
+			"personaDevice":
+			{
+				"bEnablePersonaDevice": false
+			},
+			"version": 1
+		}
+	}
+}
