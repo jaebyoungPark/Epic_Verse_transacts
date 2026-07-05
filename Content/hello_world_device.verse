@@ -20,17 +20,21 @@ Test1():void =
         Print("BreakTime is False!", ?Duration:= 100.0)
 
 
-        
-Test3():void=
+My_class:=class:
 
-    if:
-        Value:?int = false
-        Test2[]
-        Value?
-        
-
-Test2()<decides><allocates>:void=
     var TArray:[]int = array{1, 2}
+    
+    Test3():void=
+        if:
+            Value:?int = false
+            Test2[]
+            Value?
+
+    Test2()<decides><allocates><writes>:void=
+        set TArray = array{3}
+
+
+
 
 
 hello_world_device := class(creative_device):
