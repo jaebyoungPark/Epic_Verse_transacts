@@ -19,16 +19,22 @@ Test1():void =
     else:
         Print("BreakTime is False!", ?Duration:= 100.0)
 
-Test3()<decides>:void=
-    Test2[]
 
+        
+Test3():void=
 
-Test2()<decides>:void=
-        var TArray:[]int = array{1,2,3,4}
-        set TArray = array{5}
-        TArray[10]
+    if:
+        Value:?int = false
+        Test2[]
+        Value?
+        
+
+Test2()<decides><allocates>:void=
+    var TArray:[]int = array{1, 2}
 
 
 hello_world_device := class(creative_device):
     OnBegin<override>()<suspends>:void=
-       ()
+        ()
+
+     
