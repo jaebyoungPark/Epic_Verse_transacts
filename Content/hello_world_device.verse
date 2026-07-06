@@ -1,83 +1,80 @@
 using { /Fortnite.com/Devices }
+using { /Fortnite.com/Characters }
+using { /Fortnite.com/Playspaces }
 using { /Verse.org/Simulation }
 using { /Verse.org/Verse }
-
-
-TestFunc():void =
-     
-    MousetrapsSet:int = 5
-    var MiceCaught:int = 0
-    var BreakTime:logic = false
-    
-    if:
-        MousetrapsSet > 0
-        set BreakTime = true
-        MiceCaught > 0
-    
-    if (BreakTime?):
-        Print("BreakTime is True!", ?Duration:=100.0) 
-    else:
-        Print("BreakTime is False!", ?Duration:= 100.0)
+using { /UnrealEngine.com/Temporary/SpatialMath }
 
 
 
 
-#둘다 reads 를 필요로 하는거 같은데, CTest2에선 transacts 를 요구함(근데 reads 를 추가하면 에러 x)
-#반면 Test2에선 reads를 요구함(사실상 transacts를 요구하는 듯). 
-#어쨌든 둘다 transacts 이건 세개 추가이건 요구하는바는 같긴함
-#compute 는 입출력이 void 인경우, 검증할 대상 자체가 없으니 조건을 만족하다고 친다.
-
-#case 1
-My_class:=class:
-
-    var CArray1:[]int = array{1, 2}
-    CArray2:[]int = array{3, 4}
-    
-    var CInt:int = 1000
-    var CLogic:logic = true
-    
-    CTest1():void=
-        if:
-            CTest2[]
-            if(CLogic?):
-                Print("(if)CLogic : true", ?Duration := 100.0)
-            else:
-                Print("(if)CLogic : false", ?Duration := 100.0)
-            CLogic?
-        then:
-            Print("(then)CLogic is true, CInt : {CInt}", ?Duration := 100.0)
-        else:
-            if(CLogic?):
-                Print("(else)CLogic is true, CInt : {CInt}", ?Duration := 100.0)
-            else:
-                Print("(else)CLogic is false, CInt : {CInt}", ?Duration := 100.0)
-
-
-
-    CTest2()<decides><reads>:void=
-        CArray1[1]
-
-
-
-
-#case 2
-MyArray:[]int = array{1,2,3}
-
-Test1():void=
-    if:
-        Test2[]
-
-Test2()<decides><computes>:void=
-    MyArray[2]
-
-
-
-
+#실패코드. why? 다음 커밋은 성공일거임 
 #device
 hello_world_device := class(creative_device):
     OnBegin<override>()<suspends>:void=
+        
+        Playspace:fort_playspace = GetPlayspace()
+        AllPlayers:[]player = Playspace.GetPlayers()
 
-        myclass:My_class = My_class{}
-        myclass.CTest1()
+        var FirstPosition:transform = transform{}
+        var SecondPosition:transform = transform{}
+
+        if:
+            Print("First if", ?Duration:=15.0)
+            Player:player = AllPlayers[0]
+            FortniteCharacter:fort_character = Player.GetFortCharacter[]
+            set FirstPosition = FortniteCharacter.GetTransform()
+        then:
+            Print("Move or prepare to take damage!", ?Duration:=15.0)
+            Sleep(10.0)
+
+        var DistanceBetweenPositions:float = 0.0
+        if:
+            Print("Seconds if", ?Duration:=15.0)
+            Player:player = AllPlayers[0]
+            FortniteCharacter:fort_character = Player.GetFortCharacter[]
+            set SecondPosition = FortniteCharacter.GetTransform()
+            set DistanceBetweenPositions = DistanceXY(FirstPosition.Translation, SecondPosition.Translation)
+            DistanceBetweenPositions < 1000.0
+        then:
+            Print("First : {FirstPosition.Translation}", ?Duration:=15.0)
+            Print("Second: {SecondPosition.Translation}", ?Duration:=15.0)
+            Print("Distance : {DistanceBetweenPositions}", ?Duration:=15.0)          
+            Print("Applying Damage", ?Duration:=15.0)
+            HurtPlayer(50.0)
+        else:
+            set DistanceBetweenPositions = DistanceXY(FirstPosition.Translation, SecondPosition.Translation)
+            Print("else)First : {FirstPosition.Translation}", ?Duration:=15.0)
+            Print("else)Second: {SecondPosition.Translation}", ?Duration:=15.0)
+            Print("else)Distance : {DistanceBetweenPositions}", ?Duration:=15.0)
+
+
+
+
+    HurtPlayer(DamageAmount:float):void=
+        Playspace:fort_playspace = GetPlayspace()
+        AllPlayers:[]player = Playspace.GetPlayers()
+        if (Player:player = AllPlayers[0]):
+            if(FortniteCharacter:fort_character = Player.GetFortCharacter[]):
+                MyCharacterHealth:float = FortniteCharacter.GetHealth()
+                DamageToDo:float = CalculateDamage(MyCharacterHealth, DamageAmount, 1.0)
+                Print("Damage To Do : {DamageToDo}", ?Duration:=15.0)
+                FortniteCharacter.Damage(DamageToDo)
+
+    CalculateDamage(PlayerHealth:float, DesiredDamageAmount:float, MinHealth:float):float=
+        
+        if(PlayerHealth > DesiredDamageAmount):
+            return DesiredDamageAmount
+        else if(PlayerHealth > MinHealth):
+            return PlayerHealth - MinHealth
+        else:
+            return PlayerHealth
+
+    
+
+
+
+
+            
 
      
